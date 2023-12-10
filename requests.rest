@@ -1,0 +1,12 @@
+GET http://localhost:3000/api/users/test
+
+
+###
+POST http://localhost:3000/api/auth/signup
+Content-Type: application/json
+
+{
+    "username": "Muluken",
+    "email":"muluken@example.com",
+    "password":"1234"
+}
