@@ -15,7 +15,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api/users', userRouter);
 app.use('/api/auth', require('./routes/auth.route'));
 
-const PORT = process.env.PORT || 3000;
+
+app.use((err,req,res,next) => {
+    const statusCode = err.statusCode || 500;
+    const message = err.message || "Internal Server Error";
+    res.status(statusCode).json({
+      success: false,
+      statusCode,
+      message: message
+    });
+})
+
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
 });
