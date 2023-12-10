@@ -6,8 +6,8 @@ const Header = () => {
     <header className='bg-slate-200 shadow-md '>
         <div className='flex justify-between items-center max-w-6xl mx-auto py-1 px-3'>
             <h1 className='font-bold text-sm sm:text-xl flex flex-wrap'>
-                <span className='text-slate-500'>Sahand</span>
-                <span className='text-slate-700'>Estate</span>
+                <span className='text-slate-500'>Ayat</span>
+                <span className='text-slate-700'>RealEstate</span>
             </h1>
 
             <form className='bg-slate-100 p-1 rounded-lg flex items-center'>
