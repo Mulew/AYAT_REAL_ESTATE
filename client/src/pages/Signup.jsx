@@ -30,7 +30,7 @@ const Signup = () => {
     }
     setloading(false);
     seterror(null);
-    // navigate('/signin');
+    navigate('/signin');
   }
   catch(e){
     setloading(false);
