@@ -1,24 +1,89 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { updatefailerror,updateusersuccess,updateuserstart } from '../redux/user/userSlice';
+import { useDispatch } from 'react-redux';
 const Profile = () => {
-  const {currentuser} = useSelector((state) => state.user)
+  const [formdata, setformdata] = useState({});
+  const { currentuser } = useSelector((state) => state.user);
+  const {error,loading} = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const handleChange = (e) => {
+    setformdata({
+      ...formdata,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    try{
+      dispatch(updateuserstart());
+      const res = await fetch(`/api/users/update/${currentuser._id}`, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formdata),
+      });
+      const data = await res.json();
+      if (data.success) {
+        dispatch(updateusersuccess(data.user));
+      }
+      else{
+        dispatch(updatefailerror(data.message));
+        return;
+      }
+
+    }
+    catch(err){
+      dispatch(updatefailerror(err.message));
+    }
+  }
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
-      <form className='flex flex-col gap-1'>
-        <img src={currentuser.avatar} alt={currentuser.username} 
-        className='w-24 h-24 rounded-full mx-auto object-cover cursor-pointer self-center mt-2'/>
-        <input type='text' id='username' placeholder='Username' className='border border-gray-300 rounded-lg p-3 my-2'/>
-        <input type='email' id='email' placeholder='email' className='border border-gray-300 rounded-lg p-3 my-2'/>
-        <input type='password' id='password' placeholder='password' className='border border-gray-300 rounded-lg p-3 my-2'/>
-        <button className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80'>Update</button>
+      <form className='flex flex-col gap-1' onSubmit={handleSubmit}>
+        <img
+          src={currentuser.avatar}
+          alt={currentuser.username}
+          className='w-24 h-24 rounded-full mx-auto object-cover cursor-pointer self-center mt-2'
+        />
+        <input
+          type='text'
+          id='username'
+          placeholder='Username'
+          name='username'
+          defaultValue={currentuser.username}
+          className='border border-gray-300 rounded-lg p-3 my-2'
+          onChange={handleChange}
+        />
+        <input
+          type='email'
+          id='email'
+          placeholder='Email'
+          name='email'
+          defaultValue={currentuser.email}
+          className='border border-gray-300 rounded-lg p-3 my-2'
+          onChange={handleChange}
+        />
+        <input
+          type='password'
+          id='password'
+          placeholder='Password'
+          name='password'
+          className='border border-gray-300 rounded-lg p-3 my-2'
+          onChange={handleChange}
+        />
+        <button disabled = {loading} className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80'>
+          {loading ? 'Loading...' :'Update'}
+        </button>
       </form>
       <div className='flex justify-between mt-5'>
         <span className='text-red-700 cursor-pointer'>Delete Account</span>
         <span className='text-red-700 cursor-pointer'>Sign Out</span>
       </div>
+      <p className='text-red-700'>{error ? error : ''}</p>
     </div>
-  )
-}
+  );
+};
 
 export default Profile;
