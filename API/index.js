@@ -4,11 +4,11 @@ const bodyParser = require('body-parser');
 const connectDB = require('./DB/DBConnection');
 const userRouter = require('./routes/user.route');
 const UserModel = require('./Models/user.model');
-
+const cookieparser = require('cookie-parser');
 dotenv.config();
 connectDB();
 const app = express();
-
+app.use(cookieparser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
