@@ -6,6 +6,7 @@ const Profile = () => {
   const [formdata, setformdata] = useState({});
   const { currentuser } = useSelector((state) => state.user);
   const {error,loading} = useSelector((state) => state.user);
+  const [updatesuccess,setupdatesuccess] = useState(false);
   const dispatch = useDispatch();
   const handleChange = (e) => {
     setformdata({
@@ -27,6 +28,7 @@ const Profile = () => {
       const data = await res.json();
       if (data.success) {
         dispatch(updateusersuccess(data.user));
+        setupdatesuccess(true);
       }
       else{
         dispatch(updatefailerror(data.message));
@@ -81,7 +83,10 @@ const Profile = () => {
         <span className='text-red-700 cursor-pointer'>Delete Account</span>
         <span className='text-red-700 cursor-pointer'>Sign Out</span>
       </div>
+      <div>
       <p className='text-red-700'>{error ? error : ''}</p>
+      <p className='text-green-700'>{updatesuccess ? "User updated successfully!" : ''}</p>
+      </div>
     </div>
   );
 };
