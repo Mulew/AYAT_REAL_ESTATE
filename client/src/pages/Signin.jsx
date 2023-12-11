@@ -2,6 +2,7 @@ import React,{useState} from 'react'
 import {Link,useNavigate} from 'react-router-dom';
 import { useDispatch,useSelector } from 'react-redux';
 import { signinstart,signinsuccess,signinfailer } from '../redux/user/userSlice';
+import OAth from '../components/OAth';
 const Signin = () => {
   const navigate = useNavigate();
   const [formdata,setformdata] = useState({})
@@ -51,6 +52,7 @@ console.log(currentuser);
           className='bg-slate-700 p-3 text-white rounded-lg hover:opacity-95 disabled:opacity-80'>
           {loading ? 'Loading...' : 'Sign In'}
         </button>
+        <OAth />
         </form>
         <div className='flex gap-2 mt-5'>
           <p>Dont Have an account?</p>

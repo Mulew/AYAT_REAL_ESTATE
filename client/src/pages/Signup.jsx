@@ -1,5 +1,6 @@
 import React,{useState} from 'react'
 import {Link,useNavigate} from 'react-router-dom';
+import OAth from '../components/OAth';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -51,6 +52,7 @@ const Signup = () => {
           className='bg-slate-700 p-1 text-white rounded-lg hover:opacity-95 disabled:opacity-80'>
           {loading ? 'Loading...' : 'Signup'}
         </button>
+        <OAth />
         </form>
         <div className='flex gap-2 mt-5'>
           <p>Have an account?</p>
