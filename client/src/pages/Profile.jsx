@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { updatefailerror,updateusersuccess,updateuserstart } from '../redux/user/userSlice';
+import { updatefailerror,updateusersuccess,updateuserstart,
+        logoutuserstart,logoutfailerror,logoutusersuccess } from '../redux/user/userSlice';
 import { useDispatch } from 'react-redux';
 const Profile = () => {
   const [formdata, setformdata] = useState({});
@@ -38,6 +39,22 @@ const Profile = () => {
     }
     catch(err){
       dispatch(updatefailerror(err.message));
+    }
+  }
+  const handlesignout =async()=>{
+    try{
+      dispatch(logoutuserstart());
+      const res = await fetch('/api/auth/signout');
+      const data = await res.json();
+      if(data.success === false){
+        dispatch(logoutfailerror(data.message));
+        return;
+      }
+      dispatch(logoutusersuccess());
+
+    }
+    catch(err){
+      dispatch(logoutfailerror(err));
     }
   }
   return (
@@ -81,7 +98,7 @@ const Profile = () => {
       </form>
       <div className='flex justify-between mt-5'>
         <span className='text-red-700 cursor-pointer'>Delete Account</span>
-        <span className='text-red-700 cursor-pointer'>Sign Out</span>
+        <span onClick={handlesignout} className='text-red-700 cursor-pointer'>Sign Out</span>
       </div>
       <div>
       <p className='text-red-700'>{error ? error : ''}</p>
