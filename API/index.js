@@ -3,7 +3,6 @@ const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const connectDB = require('./DB/DBConnection');
 const userRouter = require('./routes/user.route');
-const UserModel = require('./Models/user.model');
 const cookieparser = require('cookie-parser');
 dotenv.config();
 connectDB();
@@ -14,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/api/users', userRouter);
 app.use('/api/auth', require('./routes/auth.route'));
-
+app.use('/api/listings',require('./routes/listings.route'))
 
 app.use((err,req,res,next) => {
     const statusCode = err.statusCode || 500;
