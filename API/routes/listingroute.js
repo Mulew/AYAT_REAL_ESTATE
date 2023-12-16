@@ -4,7 +4,7 @@ const multer = require('multer');
 const ListingModel = require('../Models/listing.model');
 const { verifytoken } = require('../utils/verifyUser');
 const path = require('path');
-const {deleteListing} = require('../controllers/listing.controller');
+const {deleteListing,UpdateListing,getlisting} = require('../controllers/listing.controller');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -47,5 +47,7 @@ const storage = multer.diskStorage({
 });
 
 router.delete('/delete/:id',verifytoken,deleteListing);
+router.post('/updates/:id',verifytoken,UpdateListing);
+router.get('/get/:id',getlisting)
 
 module.exports = router;

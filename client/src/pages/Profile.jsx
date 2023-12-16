@@ -76,7 +76,6 @@ const Profile = () => {
         method:'delete'
       });
       const data = await res.json();
-      console.log(data);
     }
     catch(err){
       console.log(err);
@@ -148,7 +147,9 @@ const Profile = () => {
             </Link>
             <div className='flex flex-col items-center'>
               <button onClick={(e)=>handledelete(listing._id)} className='text-red-700 '>Delete</button>
-              <button className='text-green-700'>Edit</button>
+              <Link to={`/updatelisting/${listing._id}`}>
+              <button  className='text-green-700'>Edit</button>
+              </Link>
             </div>
           </div>
         );
