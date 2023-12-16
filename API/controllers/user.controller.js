@@ -1,6 +1,8 @@
 const userModel = require("../Models/user.model");
 const { errorHandler } = require("../utils/error");
 const bcryptjs = require("bcryptjs");
+const ListingScema = require("../Models/listing.model");
+
 const updateuserinfo = async(req,res,next)=>{
     //before makin the update make sure the person who tries to make update is authenticated or not
     //when we sign in the user we created the token inside the cookie and now we can use that token to verify the user
@@ -29,5 +31,17 @@ const updateuserinfo = async(req,res,next)=>{
     }
 }
 
+const getuserlisting =async(req,res,next)=>{
+    if(req.user.id !== req.params.id){
+        return next(errorHandler(401,"you can only see your own listings"))
+    }
+    try{
+        const listings = await ListingScema.find({userRef:req.params.id})
+        return res.status(201).json(listings);
+    }
+    catch(err){
+        next(err);
+    }
+}
 
-module.exports = {updateuserinfo};
+module.exports = {updateuserinfo,getuserlisting};

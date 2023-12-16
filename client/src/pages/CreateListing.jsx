@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-
+import { useSelector } from 'react-redux';
 const CreateListing = () => {
+    const { currentuser } = useSelector((state) => state.user);
   const [files, setFiles] = useState([]);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -27,13 +28,14 @@ const CreateListing = () => {
       formData.append('parking', parking);
       formData.append('furnished', furnished);
       formData.append('offer', offer);
-      formData.append('beds', beds);
-      formData.append('bath', bath);
-      formData.append('price', price);
-      formData.append('discount', discount);
-      for (let i = 0; i < files.length; i++) {
-        formData.append('myimages', files[i]);
+      formData.append('bedrooms', beds);
+      formData.append('bathrooms', bath);
+      formData.append('regularPrice', price);
+      formData.append('discountedPrice', discount);
+      if (files.length > 0) {
+        formData.append('avatar', files[0]);
       }
+      formData.append('userRef', currentuser._id);
   
       const response = await fetch('/api/listings/create', {
         method: 'POST',
@@ -50,7 +52,7 @@ const CreateListing = () => {
   return (
     <main className='p-3 max-w-4xl mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Create A listing</h1>
-      <form className='flex flex-col sm:flex-row gap-4' onSubmit={handleFormSubmit}>
+      <form className='flex flex-col sm:flex-row gap-4' onSubmit={handleFormSubmit} encType='multipart/form-data'>
         <div className='flex flex-col gap-4 flex-1'>
           <input
             type='text'

@@ -13,11 +13,11 @@ const ListingSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    regularprice:{
+    regularPrice:{
         type:Number,
         required:true,
     },
-    discountedprice:{
+    discountedPrice:{
         type:Number,
         required:true,
     },
@@ -41,11 +41,11 @@ const ListingSchema = new mongoose.Schema({
         type:Boolean,
         required:true,
     },
-    imageurl:{
-        type:Array,
+    avatar:{//image url
+        type:String,
         required:true,
     },
-    userRef:{
+    userRef:{//which user created this listing
         type:String,
         required:true,
     }
