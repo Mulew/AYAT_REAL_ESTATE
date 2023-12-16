@@ -4,6 +4,7 @@ const multer = require('multer');
 const ListingModel = require('../Models/listing.model');
 const { verifytoken } = require('../utils/verifyUser');
 const path = require('path');
+const {deleteListing} = require('../controllers/listing.controller');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -13,7 +14,6 @@ const storage = multer.diskStorage({
     cb(null, Date.now()+file.originalname);
   },
 });
-  
   const upload = multer({
     storage: storage,
   });
@@ -45,5 +45,7 @@ const storage = multer.diskStorage({
     next(err);
   }
 });
+
+router.delete('/delete/:id',verifytoken,deleteListing);
 
 module.exports = router;

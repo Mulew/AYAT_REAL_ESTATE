@@ -70,6 +70,18 @@ const Profile = () => {
       console.log(err);
     }
   }
+  const handledelete = async(Listing_ID)=>{
+    try{
+      const res = await fetch(`/api/listings/delete/${Listing_ID}`,{
+        method:'delete'
+      });
+      const data = await res.json();
+      console.log(data);
+    }
+    catch(err){
+      console.log(err);
+    }
+  }
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
@@ -135,12 +147,11 @@ const Profile = () => {
               <p className='text-slate-700 font-semibold flex-1 hover:underline truncate'>{listing.name}</p>
             </Link>
             <div className='flex flex-col items-center'>
-              <button className='text-red-700 '>Delete</button>
+              <button onClick={(e)=>handledelete(listing._id)} className='text-red-700 '>Delete</button>
               <button className='text-green-700'>Edit</button>
             </div>
           </div>
         );
-
       }
       )}
     </div>
