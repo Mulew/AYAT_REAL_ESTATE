@@ -1,11 +1,10 @@
-
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import {useParams,useNavigate} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 
 const Listing = () => {
     const params = useParams();
+    const [listing, setListing] = useState();
     useEffect(() => {
         const fetchListing = async () => {
           try {
@@ -14,17 +13,25 @@ const Listing = () => {
               throw new Error(`Failed to fetch listing: ${res.status} ${res.statusText}`);
             }
             const data = await res.json();
+            setListing(data);
           } catch (error) {
             console.error('Failed to fetch listing:', error);
           }
         }
-
         fetchListing();
       }, []);
   return (
-    <div>
-      <h1>Listing</h1>
-    </div>
+    <main  className=''>
+      {listing && 
+        <div>
+        <img
+        src={`http://localhost:3000/images/` + listing.avatar }
+        alt={listing.name}
+        style ={{ backgroundSize: 'cover', width: '100%', height: '480px' }}
+      />
+        </div>
+      }
+    </main>
   )
 }
 
