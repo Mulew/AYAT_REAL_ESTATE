@@ -9,6 +9,7 @@ const Profile = () => {
   const { currentuser } = useSelector((state) => state.user);
   const {error,loading} = useSelector((state) => state.user);
   const [updatesuccess,setupdatesuccess] = useState(false);
+  const [showlistings,setshowlistings] = useState(true);
   const dispatch = useDispatch();
   const handleChange = (e) => {
     setformdata({
@@ -56,6 +57,17 @@ const Profile = () => {
     }
     catch(err){
       dispatch(logoutfailerror(err));
+    }
+  }
+  const handleshowclick = async()=>{
+    try{
+      const res = await fetch(`/api/users/listings/${currentuser._id}`);
+      const data = await res.json();
+      setshowlistings(data);
+      console.log(data);
+    }
+    catch(err){
+      console.log(err);
     }
   }
   return (
@@ -108,6 +120,29 @@ const Profile = () => {
       <p className='text-red-700'>{error ? error : ''}</p>
       <p className='text-green-700'>{updatesuccess ? "User updated successfully!" : ''}</p>
       </div>
+      <button onClick={handleshowclick} className='text-green-700 w-full'>Show Listings</button>
+      {showlistings && showlistings.length > 0 && showlistings.map((listing) => {
+        return (
+          <div key={listing._id} className='border rounded-lg p-3 flex justify-between items-center gap-4'>
+            <Link to={`/listing/${listing._id}`}>
+              <img
+                src={`http://localhost:3000/images/` + listing.avatar}
+                alt={listing.name}
+                className='w-16 h-16  mx-auto object-contain rounded-lg cursor-pointer self-center mt-2'
+              />
+            </Link>
+            <Link to={`/listing/${listing._id}`} className='text-slate-700 font-semibold flex-1 hover:underline truncate '>
+              <p className='text-slate-700 font-semibold flex-1 hover:underline truncate'>{listing.name}</p>
+            </Link>
+            <div className='flex flex-col items-center'>
+              <button className='text-red-700 '>Delete</button>
+              <button className='text-green-700'>Edit</button>
+            </div>
+          </div>
+        );
+
+      }
+      )}
     </div>
   );
 };
