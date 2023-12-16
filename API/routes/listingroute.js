@@ -46,6 +46,50 @@ const storage = multer.diskStorage({
   }
 });
 
+// PUT route to update a listing
+router.put('/update/:listingID', verifytoken, upload.single('avatar'), async (req, res) => {
+  try {
+    const { listingID } = req.params;
+    const { name, description, address, regularPrice, discountedPrice, bathrooms, bedrooms, furnished, parking, type, offer, userRef } = req.body;
+    const imagePath = req.file ? req.file.filename : null; // Check if a new avatar file was uploaded
+
+    // Find the listing by ID
+    const listing = await ListingModel.findById(listingID);
+
+    if (!listing) {
+      return res.status(404).json({ error: 'Listing not found' });
+    }
+
+    // Update the listing fields with the new values
+    listing.name = name;
+    listing.description = description;
+    listing.address = address;
+    listing.regularPrice = regularPrice;
+    listing.discountedPrice = discountedPrice;
+    listing.bathrooms = bathrooms;
+    listing.bedrooms = bedrooms;
+    listing.furnished = furnished;
+    listing.parking = parking;
+    listing.type = type;
+    listing.offer = offer;
+    listing.userRef = userRef;
+
+    // Update the avatar if a new one was uploaded
+    if (imagePath) {
+      listing.avatar = imagePath;
+    }
+
+    // Save the updated listing to the database
+    const updatedListing = await listing.save();
+
+    res.json(updatedListing);
+  } catch (error) {
+    console.error('Failed to update listing:', error);
+    res.status(500).json({ error: 'Failed to update listing' });
+  }
+});
+
+
 router.delete('/delete/:id',verifytoken,deleteListing);
 router.post('/updates/:id',verifytoken,UpdateListing);
 router.get('/get/:id',getlisting)

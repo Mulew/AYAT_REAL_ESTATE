@@ -41,20 +41,18 @@ const UpdateListing = () => {
       }
       formData.append('userRef', currentuser._id);
     try {
-      const res = await fetch(`/api/listings/updates/${ListingID}`, {
-        method: 'POST',
+      const res = await fetch(`/api/listings/update/${ListingID}`, {
+        method: 'PUT',
         body: formData,
       });
         if (!res.ok) {
           throw new Error(`Failed to fetch listing b/c: ${res.status} ${res.statusText}`);
         }
   
-      const data = await res.json();
-      console.log(data);
+      navigate('/profile');
     } catch (error) {
       console.error('Failed to create listing:', error);
     }
-    
   };
   useEffect(() => {
     const fetchListing = async () => {

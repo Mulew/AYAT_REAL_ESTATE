@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import {useNavigate} from 'react-router-dom';
 const CreateListing = () => {
+  const navigate = useNavigate();
     const { currentuser } = useSelector((state) => state.user);
   const [files, setFiles] = useState([]);
   const [name, setName] = useState('');
@@ -42,8 +44,7 @@ const CreateListing = () => {
         body: formData,
       });
   
-      const data = await response.json();
-      console.log(data);
+      navigate('/profile');
     } catch (error) {
       console.error('Failed to create listing:', error);
     }
@@ -190,8 +191,8 @@ const CreateListing = () => {
                 type='number'
                 id='discount'
                 name='discount'
-                min='1'
-                max='10'
+                min='100'
+                max='1000000'
                 required
                 className='p-1 border border-gray-300 rounded-lg'
                 value={discount}
