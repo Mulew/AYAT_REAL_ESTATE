@@ -5,6 +5,7 @@ const connectDB = require('./DB/DBConnection');
 const userRouter = require('./routes/user.route');
 const cookieparser = require('cookie-parser');
 const ListingRoute = require('./routes/listingroute');
+const userModel = require('./Models/user.model');
 const path = require('path');
 dotenv.config();
 connectDB();
@@ -17,6 +18,19 @@ app.use('/images', express.static(path.join(__dirname, 'public/images')));
 app.use('/api/users', userRouter);
 app.use('/api/auth', require('./routes/auth.route'));
 app.use('/api/listings',ListingRoute);
+app.get('/api/user/:id', async (req, res, next) => {
+  try {
+    const user = await userModel.findById(req.params.id);
+    if (!user) {
+      return next(errorHandler(404, 'User not found'));
+    }
+    const { password: pass, ...rest } = user._doc;
+    res.status(200).json(rest);
+  } catch (error) {
+    next(error);
+  }
+
+});
 
 app.use((err,req,res,next) => {
     const statusCode = err.statusCode || 500;

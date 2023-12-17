@@ -44,4 +44,15 @@ const getuserlisting =async(req,res,next)=>{
     }
 }
 
-module.exports = {updateuserinfo,getuserlisting};
+const getuser =async(req,res,next)=>{
+    try {
+        const user = await userModel.findById(req.params.id );
+        if (!user) return next(errorHandler(404, "User not found"));
+        const { password: pass, ...rest } = user._doc;
+        res.status(200).json(rest);
+      } catch (err) {
+        next(err);
+      }
+}
+
+module.exports = {updateuserinfo,getuserlisting,getuser};

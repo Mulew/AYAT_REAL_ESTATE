@@ -9,6 +9,11 @@ const ListingSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
+    type:{
+        type:String,
+        required:true,
+        default:"rent"
+    },
     address:{
         type:String,
         required:true,
