@@ -1,4 +1,6 @@
-GET http://localhost:3000/api/users/test
+GET http://localhost:3000/api/listings/get?searchTerm=Cm
+Content-Type: application/json
+
 
 
 ###

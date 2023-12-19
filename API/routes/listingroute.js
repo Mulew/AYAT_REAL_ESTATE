@@ -4,7 +4,7 @@ const multer = require('multer');
 const ListingModel = require('../Models/listing.model');
 const { verifytoken } = require('../utils/verifyUser');
 const path = require('path');
-const {deleteListing,UpdateListing,getlisting} = require('../controllers/listing.controller');
+const {deleteListing,UpdateListing,getlisting,getListings} = require('../controllers/listing.controller');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -93,5 +93,6 @@ router.put('/update/:listingID', verifytoken, upload.single('avatar'), async (re
 router.delete('/delete/:id',verifytoken,deleteListing);
 router.post('/updates/:id',verifytoken,UpdateListing);
 router.get('/get/:id',getlisting)
+router.get('/get',getListings)
 
 module.exports = router;
