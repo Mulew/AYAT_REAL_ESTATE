@@ -7,12 +7,16 @@ const cookieparser = require('cookie-parser');
 const ListingRoute = require('./routes/listingroute');
 const userModel = require('./Models/user.model');
 const path = require('path');
+
 dotenv.config();
 connectDB();
 const app = express();
+
 app.use(cookieparser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(express.static(path.join(__dirname, '/client/dist')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
 app.use('/api/users', userRouter);
@@ -32,6 +36,9 @@ app.get('/api/user/:id', async (req, res, next) => {
 
 });
 
+app.get('/*',(req,res) => {
+  res.sendFile(path.join(__dirname,'client','dist','index.html'));
+});
 app.use((err,req,res,next) => {
     const statusCode = err.statusCode || 500;
     const message = err.message || "Internal Server Error";
@@ -41,6 +48,7 @@ app.use((err,req,res,next) => {
       message: message
     });
 })
+
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
