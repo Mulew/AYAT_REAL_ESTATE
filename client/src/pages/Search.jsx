@@ -2,13 +2,21 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ListingItem from '../components/ListingItem';
 
-const Search =()=> {
+export default function Search() {
   const navigate = useNavigate();
-  const [sidebardata, setSidebardata] = useState({searchTerm: '',type: 'all',parking: false,furnished: false,offer: false,sort: 'created_at',order: 'desc',});
+  const [sidebardata, setSidebardata] = useState({
+    searchTerm: '',
+    type: 'all',
+    parking: false,
+    furnished: false,
+    offer: false,
+    sort: 'created_at',
+    order: 'desc',
+  });
+
   const [loading, setLoading] = useState(false);
   const [listings, setListings] = useState([]);
   const [showMore, setShowMore] = useState(false);
-
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -103,7 +111,7 @@ const Search =()=> {
     urlParams.set('sort', sidebardata.sort);
     urlParams.set('order', sidebardata.order);
     const searchQuery = urlParams.toString();
-    navigate(`/search/${searchQuery}`);
+    navigate(`/search?${searchQuery}`);
   };
 
   const onShowMoreClick = async () => {
@@ -136,7 +144,6 @@ const Search =()=> {
               onChange={handleChange}
             />
           </div>
-
           <div className='flex gap-2 flex-wrap items-center'>
             <label className='font-semibold'>Type:</label>
             <div className='flex gap-2'>
@@ -159,18 +166,16 @@ const Search =()=> {
               />
               <span>Rent</span>
             </div>
-
             <div className='flex gap-2'>
               <input
                 type='checkbox'
                 id='sale'
                 className='w-5'
                 onChange={handleChange}
-                checked={sidebardata.type === 'sale'}//cheked only if the type is sale
+                checked={sidebardata.type === 'sale'}
               />
               <span>Sale</span>
             </div>
-
             <div className='flex gap-2'>
               <input
                 type='checkbox'
@@ -182,8 +187,6 @@ const Search =()=> {
               <span>Offer</span>
             </div>
           </div>
-
-
           <div className='flex gap-2 flex-wrap items-center'>
             <label className='font-semibold'>Amenities:</label>
             <div className='flex gap-2'>
@@ -192,11 +195,10 @@ const Search =()=> {
                 id='parking'
                 className='w-5'
                 onChange={handleChange}
-                checked={sidebardata.parking}//checked only if the parking is true unless uncheked
+                checked={sidebardata.parking}
               />
               <span>Parking</span>
             </div>
-
             <div className='flex gap-2'>
               <input
                 type='checkbox'
@@ -208,7 +210,6 @@ const Search =()=> {
               <span>Furnished</span>
             </div>
           </div>
-
           <div className='flex items-center gap-2'>
             <label className='font-semibold'>Sort:</label>
             <select
@@ -261,5 +262,3 @@ const Search =()=> {
     </div>
   );
 }
-
-export default Search;
